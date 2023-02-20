@@ -15,3 +15,7 @@ variable "db_username" {}
 variable "db_name" {}
 
 variable "rds_endpoint" {}
+
+variable "region" {}
+
+variable "bucket_name" {}
