@@ -26,3 +26,4 @@ resource "aws_db_instance" "this" {
     Name = var.env_code
   }
 }
+

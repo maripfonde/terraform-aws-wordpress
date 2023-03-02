@@ -16,7 +16,7 @@ resource "aws_launch_configuration" "main" {
   name_prefix     = "${var.env_code}-"
   image_id        = data.aws_ami.amazonlinux.id
   instance_type   = "t2.micro"
-  security_groups   = [data.terraform_remote_state.level2.outputs.aws_security_group]
+  security_groups = [var.aws_security_group]
   user_data = templatefile("${path.module}/user-data.tpl",
     { db_username = var.db_username,
       db_password = var.rds_password,

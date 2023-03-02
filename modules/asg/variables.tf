@@ -16,6 +16,4 @@ variable "db_name" {}
 
 variable "rds_endpoint" {}
 
-variable "region" {}
-
-variable "bucket_name" {}
+variable "aws_security_group" {}
