@@ -17,3 +17,7 @@ variable "record_name" {
   default = "www"
   type    = string
 }
+
+variable "weight_main" {}
+
+variable "weight_green" {}

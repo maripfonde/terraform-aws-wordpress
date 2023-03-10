@@ -26,13 +26,17 @@ module "asg" {
   env_code           = var.env_code
   vpc_id             = module.vpc.vpc_id
   private_subnet_id  = module.vpc.private_subnet_id
+  public_subnet_id   = module.vpc.public_subnet_id
   load_balancer_sg   = module.lb.load_balancer_sg
   aws_security_group = module.rds.aws_security_group
   target_group_arn   = module.lb.target_group_arn
+  target_group_arn_green   = module.lb.target_group_arn_green
   rds_endpoint       = module.rds.rds_endpoint
   db_username        = var.db_username
   db_name            = var.db_name
   rds_password       = local.rds_password
+  min_size_green     = var.min_size_green
+  desired_capacity_green = var.desired_capacity_green
 }
 
 module "lb" {
@@ -41,4 +45,6 @@ module "lb" {
   env_code         = var.env_code
   vpc_id           = module.vpc.vpc_id
   public_subnet_id = module.vpc.public_subnet_id
+  weight_main      = var.weight_main
+  weight_green     = var.weight_green
 }

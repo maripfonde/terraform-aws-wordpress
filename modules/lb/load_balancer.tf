@@ -62,6 +62,26 @@ resource "aws_lb_target_group" "main" {
   }
 }
 
+resource "aws_lb_target_group" "green" {
+  name        = "green"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "instance"
+  vpc_id      = var.vpc_id
+
+  health_check {
+    enabled             = true
+    path                = "/"
+    port                = "traffic-port"
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+    matcher             = 200
+
+  }
+}
+
 resource "aws_lb_listener" "alb-listner" {
   load_balancer_arn = aws_lb.main.arn
   port              = 80
@@ -80,7 +100,22 @@ resource "aws_lb_listener" "main" {
   certificate_arn   = aws_acm_certificate.main.arn
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.main.arn
+    type = "forward"
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.main.arn
+        weight = var.weight_main
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.green.arn
+        weight = var.weight_green
+      }
+
+      stickiness {
+        enabled  = false
+        duration = 1
+      }
+    }
   }
 }
